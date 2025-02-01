@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import { useCart } from '../context/CartContext'; 
+import Swal from 'sweetalert2'; 
 import "../styles/detail.css"; 
 
 const ItemDetail = () => {
@@ -43,12 +44,25 @@ const ItemDetail = () => {
     const handleSave = async () => {
         // Validar stock
         if (stock <= 0 || isNaN(stock)) {
-            alert("No se puede comprar porque no hay stock disponible."); 
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "No se puede comprar este producto, ya no hay stock.",
+                timer: 2000,
+                timerProgressBar: true,
+              });
             return;
         }
 
         if (quantity > stock) {
-            alert("La cantidad seleccionada excede el stock disponible."); 
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "La cantidad seleccionada excede el stock disponible.",
+                timer: 2000, // Duración en milisegundos (2000 ms = 2 segundos)
+                timerProgressBar: true, // Muestra una barra de progreso
+                
+              }); 
             return;
         }
 
